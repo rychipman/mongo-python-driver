@@ -31,6 +31,7 @@ access:
   Database(MongoClient('localhost', 27017), u'test-database')
 """
 
+import os
 import contextlib
 import datetime
 import threading
@@ -60,6 +61,9 @@ from pymongo.server_selectors import (writable_preferred_server_selector,
                                       writable_server_selector)
 from pymongo.server_type import SERVER_TYPE
 from pymongo.topology import Topology
+from pymongo.sdam_monitor import (SDAMMonitor,
+                                  SDAMMockMonitor)
+from pymongo.sdam_topology import SDAMTopology
 from pymongo.topology_description import TOPOLOGY_TYPE
 from pymongo.settings import TopologySettings
 
@@ -319,6 +323,8 @@ class MongoClient(common.BaseObject):
         # customization of PyMongo, e.g. Motor.
         pool_class = kwargs.pop('_pool_class', None)
         monitor_class = kwargs.pop('_monitor_class', None)
+        if os.getenv('MONGO_SDAMD_PORT') is not None: # TODO: (sdam) make this into a constant
+            monitor_class = SDAMMockMonitor
         condition_class = kwargs.pop('_condition_class', None)
 
         keyword_opts = kwargs
@@ -360,6 +366,8 @@ class MongoClient(common.BaseObject):
             server_selection_timeout=options.server_selection_timeout)
 
         self._topology = Topology(self._topology_settings)
+        if os.getenv('MONGO_SDAMD_PORT') is not None: # TODO: (sdam) make this into a constant
+            self._topology = SDAMTopology(self._topology_settings)
         if connect:
             self._topology.open()
 
