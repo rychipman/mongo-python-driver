@@ -100,19 +100,19 @@ class SDAMMonitor(object):
 
     # TODO: (sdam) implement this asynchronously
     def request_check_all(self):
-        pass
+        self._command_check_all()
 
     # TODO: (sdam) implement this asynchronously
     def request_check(self, address):
-        pass
+        self._command_check(address)
 
     # TODO: (sdam) implement this asynchronously
     def request_urgent_mode(self):
-        pass
+        self._command_urgent_mode()
 
     # TODO: (sdam) implement this asynchronously
     def request_end_urgent_mode(self):
-        pass
+        self._command_end_urgent_mode()
 
     def _command_get_latest_topology(self):
         # TODO: (sdam) may not need an entire monitor pool
