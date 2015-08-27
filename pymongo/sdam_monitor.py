@@ -257,3 +257,17 @@ class SDAMMonitor(object):
             return SERVER_TYPE.RSGhost
         elif server_type == 7:
             return SERVER_TYPE.Unknown
+
+class SDAMMockMonitor(object):
+
+    def __init__(self, server_description, topology, pool, topology_settings):
+        pass
+
+    def open(self):
+        pass
+
+    def request_check(self):
+        pass
+
+    def close(self):
+        pass
